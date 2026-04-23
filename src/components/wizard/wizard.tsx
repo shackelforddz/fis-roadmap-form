@@ -325,7 +325,7 @@ function Splash({ onStart }: { onStart: () => void }) {
         <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
           CLS Roadmap
         </p>
-        <h1 className="text-4xl font-semibold leading-tight sm:text-5xl">
+        <h1 className="text-4xl font-bold leading-tight sm:text-5xl">
           Share your feedback
         </h1>
         <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">
@@ -365,7 +365,7 @@ function PrioritySectionView({
         <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
           Priority: {priority}
         </p>
-        <h2 className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
+        <h2 className="text-3xl font-bold leading-tight text-foreground sm:text-4xl">
           {section.label}
         </h2>
       </div>
@@ -446,7 +446,7 @@ function Intro({
         <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
           A bit about you
         </p>
-        <h2 className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
+        <h2 className="text-3xl font-bold leading-tight text-foreground sm:text-4xl">
           Tell us who you are
         </h2>
       </div>
@@ -547,7 +547,7 @@ function Thanks({ onDone }: { onDone: () => void }) {
         <Check className="size-10 text-primary" />
       </div>
       <div className="flex flex-col gap-3">
-        <h1 className="text-4xl font-semibold leading-tight sm:text-5xl">
+        <h1 className="text-4xl font-bold leading-tight sm:text-5xl">
           Thank you!
         </h1>
         <p className="max-w-xl text-lg leading-relaxed text-muted-foreground">

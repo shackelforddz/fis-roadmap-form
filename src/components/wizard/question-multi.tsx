@@ -31,7 +31,7 @@ export function QuestionMulti({
 
   return (
     <div className="flex flex-col gap-6">
-      <h2 className="text-2xl leading-snug font-medium text-foreground sm:text-3xl">
+      <h2 className="text-2xl leading-snug font-bold text-foreground sm:text-3xl">
         {question.prompt}
       </h2>
       <p className="-mt-4 text-base text-muted-foreground">Select all that apply.</p>

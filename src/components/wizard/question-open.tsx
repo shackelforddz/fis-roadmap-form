@@ -14,7 +14,7 @@ export function QuestionOpen({
 }) {
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-2xl leading-snug font-medium text-foreground sm:text-3xl">
+      <h2 className="text-2xl leading-snug font-bold text-foreground sm:text-3xl">
         {question.prompt}
       </h2>
       <Textarea
