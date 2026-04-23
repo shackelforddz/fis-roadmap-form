@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CLS Roadmap Feedback
 
-## Getting Started
+Single-page wizard form for collecting CLS roadmap feedback on a shared iPad.
+Responses persist to Supabase.
 
-First, run the development server:
+- Stack: Next.js 16 (App Router) · React 19 · Tailwind v4 · shadcn/ui · Supabase · Zod
+- Canonical viewport: iPad (portrait + landscape, responsive)
+- Dark mode only, large touch targets
+- Kiosk flow: splash → wizard → thank-you → auto-reset
+
+## Setup
+
+### 1. Install and run
 
 ```bash
+npm install
+cp .env.local.example .env.local   # then fill in Supabase values (below)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. Create a Supabase project
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Create a new project at [supabase.com](https://supabase.com/dashboard).
+2. In **Project Settings → API**, copy:
+   - **Project URL** → `NEXT_PUBLIC_SUPABASE_URL`
+   - **Project API keys → anon public** → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+3. Paste both into `.env.local`.
 
-## Learn More
+### 3. Run the migration
 
-To learn more about Next.js, take a look at the following resources:
+Open the Supabase dashboard → **SQL Editor** → paste the contents of
+`supabase/migrations/0001_initial.sql` and run it. This creates the
+`public.submissions` table with an anon-insert RLS policy.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4. Deploy (Vercel)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Push to GitHub, import into Vercel, and set the same two env vars in the
+Vercel project settings. The form is fully static except the submit action.
 
-## Deploy on Vercel
+## Project layout
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/
+  app/
+    actions.ts            # submitFeedback server action
+    layout.tsx            # dark-mode shell
+    page.tsx              # renders <Wizard />
+  components/
+    wizard/
+      wizard.tsx          # state machine + layout
+      question-*.tsx      # open / single / multi renderers
+    ui/                   # shadcn primitives
+  lib/
+    form-config.ts        # ALL form content + branching rules
+    submission-schema.ts  # zod validator
+    supabase/server.ts    # SSR client
+supabase/
+  migrations/0001_initial.sql
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+All form copy and the branching rules live in `src/lib/form-config.ts`.
+Add/edit questions there — the wizard picks them up automatically.
+# fis-roadmap-form
