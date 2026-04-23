@@ -23,11 +23,25 @@ export interface PrioritySection {
   questions: Question[];
 }
 
+export const NAME_QUESTION: Question = {
+  id: "name",
+  type: "open",
+  prompt: "What is your name?",
+  placeholder: "Your name",
+};
+
 export const ROLE_QUESTION: Question = {
   id: "role",
   type: "open",
   prompt: "What is your role?",
   placeholder: "e.g. Loan Officer, Operations Manager, Admin",
+};
+
+export const EMPLOYER_QUESTION: Question = {
+  id: "employer",
+  type: "open",
+  prompt: "Who do you work for?",
+  placeholder: "Your company or institution",
 };
 
 export const PRIORITIES_QUESTION: Question = {

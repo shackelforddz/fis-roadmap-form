@@ -6,6 +6,8 @@ import { ArrowLeft, ArrowRight, Check, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
+  EMPLOYER_QUESTION,
+  NAME_QUESTION,
   PRIORITY_SECTION_BY_KEY,
   PRIORITIES_QUESTION,
   ROLE_QUESTION,
@@ -20,7 +22,7 @@ import { QuestionMulti } from "./question-multi";
 import { QuestionOpen } from "./question-open";
 import { QuestionSingle } from "./question-single";
 
-type Screen = "splash" | "role" | "priorities" | "priority" | "wrapup" | "thanks";
+type Screen = "splash" | "intro" | "priorities" | "priority" | "wrapup" | "thanks";
 
 type Answers = Record<string, string | string[]>;
 type WriteIns = Record<string, string>;
@@ -33,17 +35,17 @@ function initialState() {
   return {
     screen: "splash" as Screen,
     priorityIdx: 0,
+    name: "",
     role: "",
+    employer: "",
     priorities: [] as PriorityKey[],
     prioritiesOther: false,
     prioritiesWriteIn: "",
     answers: {} as Answers,
     writeIns: {} as WriteIns,
     wrapUp: "",
-    contactName: "",
     contactEmail: "",
     error: null as string | null,
-    submittedId: null as string | null,
   };
 }
 
@@ -58,13 +60,13 @@ export function Wizard() {
   );
 
   const totalSteps =
-    2 /* role + priorities */ + orderedPriorities.length + 1; /* wrap-up */
+    2 /* intro + priorities */ + orderedPriorities.length + 1; /* wrap-up */
 
   const currentStepIndex = (() => {
     switch (s.screen) {
       case "splash":
         return -1;
-      case "role":
+      case "intro":
         return 0;
       case "priorities":
         return 1;
@@ -96,11 +98,11 @@ export function Wizard() {
     return () => clearTimeout(t);
   }, [s.screen, reset]);
 
-  const start = () => setS((p) => ({ ...p, screen: "role" }));
+  const start = () => setS((p) => ({ ...p, screen: "intro" }));
 
   const next = () => {
     setS((p) => {
-      if (p.screen === "role") return { ...p, screen: "priorities" };
+      if (p.screen === "intro") return { ...p, screen: "priorities" };
       if (p.screen === "priorities") {
         const ordered = PRIORITY_ORDER.filter((k) => p.priorities.includes(k));
         if (ordered.length > 0) {
@@ -121,8 +123,8 @@ export function Wizard() {
 
   const back = () => {
     setS((p) => {
-      if (p.screen === "role") return { ...p, screen: "splash" };
-      if (p.screen === "priorities") return { ...p, screen: "role" };
+      if (p.screen === "intro") return { ...p, screen: "splash" };
+      if (p.screen === "priorities") return { ...p, screen: "intro" };
       if (p.screen === "priority") {
         if (p.priorityIdx > 0) {
           return { ...p, priorityIdx: p.priorityIdx - 1 };
@@ -148,17 +150,18 @@ export function Wizard() {
     setS((p) => ({ ...p, error: null }));
     startTransition(async () => {
       const res = await submitFeedback({
+        name: s.name,
         role: s.role,
+        employer: s.employer,
         priorities: s.priorities,
         prioritiesWriteIn: s.prioritiesOther ? s.prioritiesWriteIn : "",
         answers: s.answers,
         writeIns: s.writeIns,
         wrapUp: s.wrapUp,
-        contactName: s.contactName,
         contactEmail: s.contactEmail,
       });
       if (res.ok) {
-        setS((p) => ({ ...p, screen: "thanks", submittedId: res.id }));
+        setS((p) => ({ ...p, screen: "thanks" }));
       } else {
         setS((p) => ({ ...p, error: res.error }));
       }
@@ -206,11 +209,14 @@ export function Wizard() {
         <div className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-6 py-8 sm:py-12">
           {s.screen === "splash" && <Splash onStart={start} />}
 
-          {s.screen === "role" && (
-            <QuestionOpen
-              question={ROLE_QUESTION}
-              value={s.role}
-              onChange={(v) => setS((p) => ({ ...p, role: v }))}
+          {s.screen === "intro" && (
+            <Intro
+              name={s.name}
+              role={s.role}
+              employer={s.employer}
+              onName={(v) => setS((p) => ({ ...p, name: v }))}
+              onRole={(v) => setS((p) => ({ ...p, role: v }))}
+              onEmployer={(v) => setS((p) => ({ ...p, employer: v }))}
             />
           )}
 
@@ -251,9 +257,7 @@ export function Wizard() {
             <WrapUp
               wrapUp={s.wrapUp}
               onWrapUp={(v) => setS((p) => ({ ...p, wrapUp: v }))}
-              contactName={s.contactName}
               contactEmail={s.contactEmail}
-              onContactName={(v) => setS((p) => ({ ...p, contactName: v }))}
               onContactEmail={(v) => setS((p) => ({ ...p, contactEmail: v }))}
             />
           )}
@@ -421,19 +425,91 @@ function QuestionRenderer({
   );
 }
 
+function Intro({
+  name,
+  role,
+  employer,
+  onName,
+  onRole,
+  onEmployer,
+}: {
+  name: string;
+  role: string;
+  employer: string;
+  onName: (v: string) => void;
+  onRole: (v: string) => void;
+  onEmployer: (v: string) => void;
+}) {
+  return (
+    <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-2">
+        <p className="text-sm font-medium uppercase tracking-[0.2em] text-muted-foreground">
+          A bit about you
+        </p>
+        <h2 className="text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
+          Tell us who you are
+        </h2>
+      </div>
+      <IntroField
+        label={NAME_QUESTION.prompt}
+        value={name}
+        onChange={onName}
+        placeholder={NAME_QUESTION.placeholder}
+      />
+      <IntroField
+        label={ROLE_QUESTION.prompt}
+        value={role}
+        onChange={onRole}
+        placeholder={ROLE_QUESTION.placeholder}
+      />
+      <IntroField
+        label={EMPLOYER_QUESTION.prompt}
+        value={employer}
+        onChange={onEmployer}
+        placeholder={EMPLOYER_QUESTION.placeholder}
+      />
+      <p className="-mt-4 text-sm text-muted-foreground">
+        Optional &mdash; tap Next to skip any field.
+      </p>
+    </div>
+  );
+}
+
+function IntroField({
+  label,
+  value,
+  onChange,
+  placeholder,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+}) {
+  return (
+    <label className="flex flex-col gap-3">
+      <span className="text-2xl leading-snug font-medium text-foreground sm:text-3xl">
+        {label}
+      </span>
+      <Input
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className="!h-16 !text-xl"
+      />
+    </label>
+  );
+}
+
 function WrapUp({
   wrapUp,
   onWrapUp,
-  contactName,
   contactEmail,
-  onContactName,
   onContactEmail,
 }: {
   wrapUp: string;
   onWrapUp: (v: string) => void;
-  contactName: string;
   contactEmail: string;
-  onContactName: (v: string) => void;
   onContactEmail: (v: string) => void;
 }) {
   return (
@@ -445,19 +521,10 @@ function WrapUp({
             Want us to follow up? (optional)
           </p>
           <p className="text-sm text-muted-foreground">
-            Leave your name and email if you&rsquo;d like someone from the CLS
-            team to reach out.
+            Leave your email if you&rsquo;d like someone from the CLS team to
+            reach out.
           </p>
         </div>
-        <label className="flex flex-col gap-2">
-          <span className="text-sm text-muted-foreground">Name</span>
-          <Input
-            value={contactName}
-            onChange={(e) => onContactName(e.target.value)}
-            placeholder="Your name"
-            className="!h-14 !text-lg"
-          />
-        </label>
         <label className="flex flex-col gap-2">
           <span className="text-sm text-muted-foreground">Email</span>
           <Input

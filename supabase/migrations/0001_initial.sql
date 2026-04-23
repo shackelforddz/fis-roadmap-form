@@ -7,8 +7,11 @@ create table if not exists public.submissions (
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz not null default now(),
 
-  -- Intro
+  -- Intro (step 1)
+  name text,
   role text,
+  employer text,
+
   priorities text[] not null default '{}',
   priorities_write_in text,
 
@@ -22,8 +25,7 @@ create table if not exists public.submissions (
   -- Wrap-up
   wrap_up text,
 
-  -- Optional contact (offered on the thank-you step)
-  contact_name text,
+  -- Optional follow-up contact (offered on the wrap-up step)
   contact_email text
 );
 

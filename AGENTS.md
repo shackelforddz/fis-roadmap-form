@@ -14,3 +14,4 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Wizard pacing is **one screen per priority** — each selected priority renders all its sub-questions on a single screen.
 - All fields are optional — users can advance with the Next button at any time.
 - Kiosk mode: after submit, the Thanks screen auto-resets after 60s back to the splash ("Tap to begin") screen.
+- **Supabase permissions**: anon has INSERT on `submissions` but NOT SELECT. Never add `.select()` or `.update()` / `.delete()` against `submissions` from anon/server action code — the request will 403 with "permission denied". To read submissions, use the service-role key in a separate admin route, or view them via the Supabase dashboard Table Editor.
