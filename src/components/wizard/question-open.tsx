@@ -14,9 +14,9 @@ export function QuestionOpen({
 }) {
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-2xl leading-snug font-medium text-foreground sm:text-3xl">
+      <h2 className="text-2xl leading-snug font-medium text-foreground sm:text-3xl">
         {question.prompt}
-      </p>
+      </h2>
       <Textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}

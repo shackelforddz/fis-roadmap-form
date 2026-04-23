@@ -16,9 +16,9 @@ export function QuestionSingle({
 
   return (
     <div className="flex flex-col gap-6">
-      <p className="text-2xl leading-snug font-medium text-foreground sm:text-3xl">
+      <h2 className="text-2xl leading-snug font-medium text-foreground sm:text-3xl">
         {question.prompt}
-      </p>
+      </h2>
       <div className="flex flex-col gap-3" role="radiogroup">
         {question.options.map((opt) => {
           const selected = value === opt.value;
