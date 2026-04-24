@@ -74,7 +74,7 @@ export const PRIORITY_SECTIONS: PrioritySection[] = [
         id: "A1",
         type: "single",
         prompt:
-          "If you could bulk edit and purge your own data, would your primary goal be to eliminate manual updates, or to finally clean up ghost data that is slowing down your system performance and reporting?",
+          "If you could bulk edit and purge your own data, would your primary goal be to eliminate manual updates, or to finally clean up data that is slowing down your system performance/reporting and/or to meet regulatory requirements?",
         options: [
           {
             value: "A1a",
@@ -106,23 +106,23 @@ export const PRIORITY_SECTIONS: PrioritySection[] = [
         id: "B1",
         type: "single",
         prompt:
-          "If you had to choose a single source of truth for a customer's real-time financial picture, would you prioritize a seamless flow into the Core (Horizon SIMS), the Treasury and Cash Management view for your Corporate clients (D1 Business), or the intuitive self-service experience for your Entrepreneurial/Small Business borrowers (D1 Consumer)?",
+          "If you had to choose a single source of truth for a customer's real-time financial picture, would you prioritize a seamless flow into the Core (Horizon, IBS, etc), the Treasury and Cash Management view for your Corporate clients (D1 Business), or the ability to bridge the gap between complex corporate treasury needs and a modern digital first experience (D1C)?",
         options: [
           {
             value: "B1a",
-            label: "D1 Consumer — self-service for borrowers",
+            label: "Universal online banker platform",
             description:
-              "Borrowers can see their commercial loans, request draws, and view statements through a self-service mobile interface.",
+              "Provide a universal online banker platform with the ability to handle complex payments, liquidity management and composable banking.",
           },
           {
             value: "B1b",
-            label: "D1 Business — unified view for small business owners",
+            label: "Unified view for small business owners",
             description:
               "Small business owners who have both personal and business accounts can see everything in one place.",
           },
           {
             value: "B1c",
-            label: "Horizon SIMS — native collateral linkage",
+            label: "Native collateral linkage in the Core",
             description:
               "When a loan officer looks at a customer record, the collateral (real estate, inventory, UCC filings) is natively linked.",
           },
@@ -130,6 +130,12 @@ export const PRIORITY_SECTIONS: PrioritySection[] = [
       },
       {
         id: "B2",
+        type: "open",
+        prompt:
+          "Are there any other key data points or insights missing from your or your customer's experience?",
+      },
+      {
+        id: "B3",
         type: "open",
         prompt:
           "Let's say that source of truth is fully established. What is the first new capability or service you'd offer your customers that is currently impossible due to data lag?",
@@ -153,10 +159,16 @@ export const PRIORITY_SECTIONS: PrioritySection[] = [
               "Configure amortization logic (e.g. seasonal fluctuations, step rates) and modify schedules mid-lifecycle, within the platform.",
           },
           {
-            value: "C1b",
-            label: "Syndication Portal Improvements",
+            value: "C1i",
+            label: "Syndication Portal Improvements: Admin Details",
             description:
-              "Provide custom spreading support (currently only blanket spreading) and admin detail support.",
+              "Refined/centralized admin details for borrowers, agents, and lenders.",
+          },
+          {
+            value: "C1j",
+            label: "Syndication Portal Improvements: Custom Spreading",
+            description:
+              "Provide custom spreading support (i.e., blanket, pro-rata, etc).",
           },
           {
             value: "C1c",
@@ -188,6 +200,12 @@ export const PRIORITY_SECTIONS: PrioritySection[] = [
               "A guided flow for creating a loan transaction from a Loan within the platform.",
           },
           {
+            value: "C1b",
+            label: "Syndication Portal Improvements",
+            description:
+              "Provide custom spreading support (currently only blanket spreading) and admin detail support.",
+          },
+          {
             value: "C1h",
             label: "Funds transfer parity",
             description:
@@ -211,7 +229,7 @@ export const PRIORITY_SECTIONS: PrioritySection[] = [
         id: "D1",
         type: "single",
         prompt:
-          "When it comes to specialized lending like ABL or Syndications, is your biggest bottleneck the lack of integration between systems, the learning curve for your staff to manage these structures correctly, or critical specialized tasks being trapped in legacy systems?",
+          "When it comes to Syndications or specialized lending like Asset Based Lending, is your biggest bottleneck the lack of integration between systems, the learning curve for your staff to manage these structures correctly, or critical specialized tasks being trapped in legacy systems?",
         options: [
           {
             value: "D1a",
@@ -253,9 +271,29 @@ export const PRIORITY_SECTIONS: PrioritySection[] = [
         options: [
           {
             value: "E1a",
-            label: "Custom field-name aliasing",
+            label: "Field Label Changes",
             description:
-              "In classic CLS, System Admins can tell the system to call a field on a screen a different name; this same feature is needed for the portal.",
+              "Let System Admins rename fields on a screen, as they can in classic CLS.",
+          },
+          {
+            value: "E1d",
+            label: "Assignment/Transfer processing",
+          },
+          {
+            value: "E1e",
+            label: "Escrow in the CLS Portal",
+            description:
+              "Bring the Classic CLS capabilities for Escrow to the CLS Portal and enhance the experience to support single-item escrow.",
+          },
+          {
+            value: "E1f",
+            label: "Additional SBA features in the CLS Portal",
+            description:
+              "In addition to the SBA card on loans, there are other SBA related features in Classic CLS that need to be brought into the CLS Portal.",
+          },
+          {
+            value: "E1g",
+            label: "Collateral",
           },
           {
             value: "E1b",
@@ -295,13 +333,13 @@ export const PRIORITY_SECTIONS: PrioritySection[] = [
           },
           {
             value: "F1b",
-            label: "Syndication Portal",
+            label: "Trade & Distribution Manager",
             description:
               "Supports complex, non-standard private credit distributions.",
           },
           {
             value: "F1c",
-            label: "Syndtrack Integration",
+            label: "Syndtrak Integration",
             description: "Ensures data integrity across the multi-platform ecosystem.",
           },
         ],
