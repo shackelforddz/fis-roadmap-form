@@ -89,6 +89,20 @@ export function Wizard() {
           Math.round(((currentStepIndex + 1) / totalSteps) * 100),
         );
 
+  const canAdvance = (() => {
+    if (s.screen === "intro") {
+      return (
+        s.name.trim().length > 0 &&
+        s.role.trim().length > 0 &&
+        s.employer.trim().length > 0
+      );
+    }
+    if (s.screen === "priorities") {
+      return s.priorities.length > 0 || s.prioritiesOther;
+    }
+    return true;
+  })();
+
   const reset = useCallback(() => setS(initialState()), []);
 
   // Auto-reset after thank-you.
@@ -305,7 +319,7 @@ export function Wizard() {
               <Button
                 onClick={next}
                 className="h-16 min-w-[140px] px-6 text-lg"
-                disabled={isPending}
+                disabled={isPending || !canAdvance}
               >
                 Next
                 <ArrowRight className="size-5" />
@@ -469,7 +483,7 @@ function Intro({
         placeholder={EMPLOYER_QUESTION.placeholder}
       />
       <p className="-mt-4 text-sm text-muted-foreground">
-        Optional &mdash; tap Next to skip any field.
+        All fields are required.
       </p>
     </div>
   );
